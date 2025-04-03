@@ -1,0 +1,30 @@
+name: Flutter Web
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: |
+          cd calculator_app
+          flutter pub get
+          
+      - name: Build
+        run: |
+          cd calculator_app
+          flutter build web
+          
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./calculator_app/build/web 
